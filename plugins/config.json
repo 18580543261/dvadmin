@@ -1,0 +1,42 @@
+{
+  "plugins_market_backend": {
+    "name": "插件后台市场",
+    "enable": true,
+    "git": "https://gitee.com/dvmarket/plugins_market_backend.git",
+    "priority": 1,
+    "tags": "v0.0.1",
+    "type": "backend"
+  },
+  "dvadmin_tenant_backend": {
+    "name": "租户管理后端",
+    "enable": true,
+    "git": "https://gitee.com/dvmarket/dvadmin_tenant_backend.git",
+    "priority": -1,
+    "tags": "v0.0.1",
+    "type": "backend"
+  },
+  "dvadmin_ak_sk_backend": {
+    "name": "SecretAccessKey后端",
+    "enable": true,
+    "git": "https://gitee.com/dvmarket/dvadmin_ak_sk_backend.git",
+    "priority": 10,
+    "tags": "v0.0.1",
+    "type": "backend"
+  },
+  "dvadmin_apscheduler_backend": {
+    "name": "apscheduler定时任务后端",
+    "enable": true,
+    "git": "https://gitee.com/dvmarket/dvadmin_apscheduler_backend.git",
+    "priority": 10,
+    "tags": "v0.0.1",
+    "type": "backend"
+  },
+  "dvadmin_mqtt_iot": {
+    "name": "mqtt物联网",
+    "enable": true,
+    "git": "https://gitee.com/dvmarket/dvadmin_apscheduler_backend.git",
+    "priority": 10,
+    "tags": "v0.0.1",
+    "type": "backend"
+  }
+}

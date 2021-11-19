@@ -1,0 +1,20 @@
+ip=192.168.56.1:8182/api/dvadmin_mqtt_iot
+auth="Basic bXF0dDphNjZhYmI1Njg0YzQ1OTYyZDg4NzU2NGYwODM0NmU4ZA=="
+emqx_ctl admins add innobase_mqtt Innobase_mqtt test
+emqx_ctl resources create "web_hook" -i "resource:connect" -c "{\"url\": \"http://$ip/mqtt/connect/\", \"headers\": {\"AUTHORIZATION\":\"$auth\",\"Content-Type\":\"application/json\"}, \"method\": \"POST\"}"
+emqx_ctl resources create "web_hook" -i "resource:disconnect" -c "{\"url\": \"http://$ip/mqtt/disconnect/\", \"headers\": {\"AUTHORIZATION\":\"$auth\",\"Content-Type\":\"application/json\"}, \"method\": \"POST\"}"
+emqx_ctl resources create "web_hook" -i "resource:publish" -c "{\"url\": \"http://$ip/mqtt/publish/\", \"headers\": {\"AUTHORIZATION\":\"$auth\",\"Content-Type\":\"application/json\"}, \"method\": \"POST\"}"
+emqx_ctl resources create "web_hook" -i "resource:deliver" -c "{\"url\": \"http://$ip/mqtt/deliver/\", \"headers\": {\"AUTHORIZATION\":\"$auth\",\"Content-Type\":\"application/json\"}, \"method\": \"POST\"}"
+emqx_ctl resources create "web_hook" -i "resource:ack" -c "{\"url\": \"http://$ip/mqtt/ack/\", \"headers\": {\"AUTHORIZATION\":\"$auth\",\"Content-Type\":\"application/json\"}, \"method\": \"POST\"}"
+emqx_ctl resources create "web_hook" -i "resource:drop" -c "{\"url\": \"http://$ip/mqtt/drop/\", \"headers\": {\"AUTHORIZATION\":\"$auth\",\"Content-Type\":\"application/json\"}, \"method\": \"POST\"}"
+emqx_ctl resources create "web_hook" -i "resource:subscribe" -c "{\"url\": \"http://$ip/mqtt/subscribe/\", \"headers\": {\"AUTHORIZATION\":\"$auth\",\"Content-Type\":\"application/json\"}, \"method\": \"POST\"}"
+emqx_ctl resources create "web_hook" -i "resource:unsubscribe" -c "{\"url\": \"http://$ip/mqtt/unsubscribe/\", \"headers\": {\"AUTHORIZATION\":\"$auth\",\"Content-Type\":\"application/json\"}, \"method\": \"POST\"}"
+
+emqx_ctl rules create "SELECT * FROM \"\$events/client_connected\"" "[{\"name\":\"data_to_webserver\",\"params\": {\"\$resource\":  \"resource:connect\"}}]" -i "connect" -d "client_connected"
+emqx_ctl rules create "SELECT * FROM \"\$events/client_disconnected\"" "[{\"name\":\"data_to_webserver\",\"params\": {\"\$resource\":  \"resource:disconnect\"}}]" -i "disconnect" -d "client_disconnected"
+emqx_ctl rules create "SELECT * FROM \"\$events/message_publish\"" "[{\"name\":\"data_to_webserver\",\"params\": {\"\$resource\":  \"resource:publish\"}}]" -i "publish" -d "message_publish"
+emqx_ctl rules create "SELECT * FROM \"\$events/message_delivered\"" "[{\"name\":\"data_to_webserver\",\"params\": {\"\$resource\":  \"resource:deliver\"}}]" -i "deliver" -d "message_delivered"
+emqx_ctl rules create "SELECT * FROM \"\$events/message_acked\"" "[{\"name\":\"data_to_webserver\",\"params\": {\"\$resource\":  \"resource:ack\"}}]" -i "ack" -d "message_acked"
+emqx_ctl rules create "SELECT * FROM \"\$events/message_dropped\"" "[{\"name\":\"data_to_webserver\",\"params\": {\"\$resource\":  \"resource:drop\"}}]" -i "drop" -d "message_dropped"
+emqx_ctl rules create "SELECT * FROM \"\$events/session_subscribed\"" "[{\"name\":\"data_to_webserver\",\"params\": {\"\$resource\":  \"resource:subscribe\"}}]" -i "subscribe" -d "session_subscribed"
+emqx_ctl rules create "SELECT * FROM \"\$events/session_unsubscribed\"" "[{\"name\":\"data_to_webserver\",\"params\": {\"\$resource\":  \"resource:unsubscribe\"}}]" -i "unsubscribe" -d "session_unsubscribed"

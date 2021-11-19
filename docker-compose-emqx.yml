@@ -1,0 +1,18 @@
+version: '3'
+services:
+  emqx:
+    image: emqx/emqx:4.3.8
+#    container_name: emqx
+    volumes:
+    - ./emqx/scripts/:/opt/emqx/scripts:rw
+    - ./emqx/etc/emqx.conf:/opt/emqx/etc/emqx.conf:rw
+    - ./emqx/etc/plugins/emqx_auth_http.conf:/opt/emqx/etc/plugins/emqx_auth_http.conf:rw
+    command:
+#        /bin/bash -c "sed -i 's/\r//' /opt/emqx/scripts/emqxc.sh && chmod +x /opt/emqx/scripts/emqxc.sh && sh /opt/emqx/scripts/emqxc.sh"
+        /bin/bash -c  "/opt/emqx/bin/emqx start && /opt/emqx/bin/emqx_ctl plugins load emqx_auth_http && sh /opt/emqx/scripts/emqxc.sh  && tail -f /dev/null"
+    ports:
+      - "1883:1883"
+      - "8083:8083"
+      - "8883:8883"
+      - "8084:8084"
+      - "18083:18083"
